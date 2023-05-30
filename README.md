@@ -54,13 +54,13 @@ require('lualine').setup({
     ...
     lualine_z = {
       -- shows only message about whitespaces in the end of line
-      { require('lualine-whitespace').check_trailing_whitespaces },
+      { require('lualine-whitespace').print_trailing_whitespaces },
       -- shows only message about mixed indentation within a line
-      { require('lualine-whitespace').check_mixed_indentation },
+      { require('lualine-whitespace').print_mixed_indentation },
       -- shows only message about different indentation on different lines
-      { require('lualine-whitespace').check_inconsistent_indentation },
+      { require('lualine-whitespace').print_inconsistent_indentation },
       -- show all that detected (see screenshot above)
-      { require('lualine-whitespace').check_all }
+      { require('lualine-whitespace').print_all }
     }
   }
 })
@@ -72,6 +72,9 @@ These are default options. You can run empty `require('lualine-whitespace').setu
 
 ```lua
 require('lualine-whitespace').setup({
+  -- Events associated with autocommmand that run all checks
+  events = { "InsertLeave", "CursorHold", "BufEnter", "BufWrite" },
+
   -- Max number of lines in file where whitespace checking is enabled
   max_lines = 20000,
 
@@ -91,30 +94,30 @@ require('lualine-whitespace').setup({
   -- Disable specific whitespace checks for individual filetypes
   -- Table should look like this:
   -- { filetype1 = {'trailing', 'mixed', 'inconsistent'}, filetype2 = {'trailing'}, ... }
-  -- 
+  --
   -- Default: {}
-  -- 
+  --
   -- Vim-airline's default: {make = {'mixed', 'inconsistent'}}
   skip_check_ft = {},
 
   -- Which filetypes have special treatment of /* */ comments,
   -- matters for inconsistent indentation algorithm
-  -- 
+  --
   -- Default: {}
-  -- 
+  --
   -- Vim-airline's default: { 'arduino', 'c', 'cpp', 'cuda', 'go', 'javascript', 'ld', 'php' }
   c_like_langs = {},
 
   -- Customize the type of mixed indent checking to perform.
-  -- 
+  --
   -- Algorithm 0: must be all spaces or all tabs before the first non-whitespace character
-  -- 
+  --
   -- Algorithm 1: certain number of spaces are allowed after tabs, but not in between this
   -- algorithm works well for /* */ style comments in a tab-indented file
-  -- 
+  --
   -- Algorithm 2: spaces are allowed after tabs, but not in between this algorithm works
   -- well with programming styles that use tabs for indentation and spaces for alignment
-  -- 
+  --
   -- Default: `0`
   indentation_algorithm = 0
 })
